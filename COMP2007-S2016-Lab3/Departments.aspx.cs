@@ -5,6 +5,12 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
+/**
+ *This Lab is done by Vandit Kothari Jose Mathew 
+ *  
+ * 
+ */
+
 // using statements that are required to connect to EF DB
 using COMP2007_S2016_Lab3.Models;
 using System.Web.ModelBinding;
@@ -16,7 +22,7 @@ namespace COMP2007_S2016_Lab3
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            // if loading the page for the first time, populate the student grid
+            // if loading the page for the first time, populate the dept grid
             if (!IsPostBack)
             {
                 Session["SortColumn"] = "DepartmentID"; // default sort column
@@ -32,7 +38,7 @@ namespace COMP2007_S2016_Lab3
             {
                 string SortString = Session["SortColumn"].ToString() + " " + Session["SortDirection"].ToString();
 
-                // query the Students Table using EF and LINQ
+                
                 var Dept = (from allDepartments in db.Departments
                             select allDepartments);
 
@@ -43,10 +49,10 @@ namespace COMP2007_S2016_Lab3
         }
         /**
        * <summary>
-       * This event handler deletes a student from the db using EF
+       * This event handler deletes a Department from the db using EF
        * </summary>
        * 
-       * @method StudentsGridView_RowDeleting
+       * @method DeptGridView_RowDeleting
        * @param {object} sender
        * @param {GridViewDeleteEventArgs} e
        * @returns {void}
@@ -56,10 +62,10 @@ namespace COMP2007_S2016_Lab3
             // store which row was clicked
             int selectedRow = e.RowIndex;
 
-            // get the selected StudentID using the Grid's DataKey collection
+           
             int DepartmentID = Convert.ToInt32(DeptGridView.DataKeys[selectedRow].Values["DepartmentID"]);
 
-            // use EF to find the selected student in the DB and remove it
+           
             using (DefaultConnection db = new DefaultConnection())
             {
                 // create object of the Department class and store the query string inside of it
@@ -67,7 +73,7 @@ namespace COMP2007_S2016_Lab3
                                                 where departmentRecords.DepartmentID == DepartmentID
                                                 select departmentRecords).FirstOrDefault();
 
-                // remove the selected student from the db
+                
                 db.Departments.Remove(deletedDepartment);
 
                 // save my changes back to the database
@@ -80,10 +86,10 @@ namespace COMP2007_S2016_Lab3
 
         /**
          * <summary>
-         * This event handler allows pagination to occur for the Students page
+         * This event handler allows pagination to occur for the Departments page
          * </summary>
          * 
-         * @method StudentsGridView_PageIndexChanging
+         * @method DeptGridView_PageIndexChanging
          * @param {object} sender
          * @param {GridViewPageEventArgs} e
          * @returns {void}
